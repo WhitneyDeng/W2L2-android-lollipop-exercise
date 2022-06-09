@@ -3,14 +3,17 @@ package com.codepath.android.lollipopexercise.activities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.android.lollipopexercise.R;
 import com.codepath.android.lollipopexercise.adapters.ContactsAdapter;
 import com.codepath.android.lollipopexercise.models.Contact;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -19,6 +22,17 @@ public class ContactsActivity extends AppCompatActivity {
     private RecyclerView rvContacts;
     private ContactsAdapter mAdapter;
     private List<Contact> contacts;
+
+    public static final int FIRST_ITEM = 0;
+
+    View.OnClickListener onClickSnackbarListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v) {
+            contacts.remove(FIRST_ITEM);
+            mAdapter.notifyItemRemoved(FIRST_ITEM);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +76,29 @@ public class ContactsActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch(id)
+        {
+            case R.id.btnAdd:
+                onComposeAction(item);
+            default:
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    public void onComposeAction(MenuItem menuItem)
+    {
+        // add contact at start of list
+        contacts.add(FIRST_ITEM, Contact.getRandomContact(this));
+        // update adapter
+        mAdapter.notifyItemInserted(FIRST_ITEM);
+        rvContacts.smoothScrollToPosition(FIRST_ITEM);
+
+        // show snack bar
+        Snackbar.make(rvContacts, R.string.snackbar_contactAdded, Snackbar.LENGTH_LONG)
+                .setAction(R.string.snackbar_action, onClickSnackbarListener)
+                .setActionTextColor(ContextCompat.getColor(ContactsActivity.this, R.color.accent))
+                .show();
+    }
+
+
 }

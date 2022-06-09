@@ -30,4 +30,16 @@ dependencies {
     implementation "androidx.palette:palette:1.0.0"
     implementation "androidx.percentlayout:percentlayout:1.0.0"
 
+    //FOR: snackbar
+    implementation "com.google.android.material:material:1.1.0"
+
+    //FOR: coordinator layout
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
+    //FOR: parcel
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
+
+    //FOR: Palettes
+    implementation "androidx.palette:palette:1.0.0"
 }
